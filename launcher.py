@@ -3,17 +3,25 @@
 import kivy
 import kivy.app
 import kivy.graphics
+import kivy.uix.actionbar
 import kivy.uix.image
 import kivy.uix.gridlayout
 import kivy.uix.label
 import kivy.uix.stacklayout
 
-kivy.require('1.0.7')
+kivy.require('1.8.0')
 
 # Callback to update the background of a widget when it resizes.
 def update_widget_bg(widget, value):
     widget.rect.pos = widget.pos
     widget.rect.size = widget.size
+
+class TopMenu(kivy.uix.actionbar.ActionBar):
+
+    def __init__(self, **kargs):
+        super().__init__(**kargs)
+        self.size_hint = (100, 8)
+        self.background_color = (255, 255, 255, 0.7)
 
 class SelectionView(kivy.uix.stacklayout.StackLayout):
 
@@ -22,7 +30,8 @@ class SelectionView(kivy.uix.stacklayout.StackLayout):
         self.size_hint = (70, 100)
         # Add background texture.
         with self.canvas.before:
-            self.rect = kivy.graphics.Rectangle(pos=self.pos, size=self.size, source='example.png')
+            self.rect = kivy.graphics.Rectangle(pos=self.pos, size=self.size,
+                                                source='example.png')
         self.bind(pos=update_widget_bg, size=update_widget_bg)
 
 class BodyPanel(kivy.uix.gridlayout.GridLayout):
@@ -31,7 +40,8 @@ class BodyPanel(kivy.uix.gridlayout.GridLayout):
         super().__init__(**kargs)
         self.size_hint = (100, 80)
         self.cols = 2
-        self.add_widget(kivy.uix.label.Label(text='The thingy on the left', size_hint=(30, 100)))
+        self.add_widget(kivy.uix.label.Label(text='The thingy on the left',
+                                             size_hint=(30, 100)))
         self.add_widget(SelectionView())
 
 class FooterLabel(kivy.uix.label.Label):
@@ -59,7 +69,7 @@ class MainWindow(kivy.uix.gridlayout.GridLayout):
     def __init__(self, **kargs):
         super().__init__(**kargs)
         self.rows = 3
-        self.add_widget(kivy.uix.label.Label(text='The thingy on top', size_hint=(100, 8)))
+        self.add_widget(TopMenu())
         self.add_widget(BodyPanel())
         self.add_widget(FooterPanel())
 
