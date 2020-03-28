@@ -22,15 +22,22 @@ class MenuButton(kivy.uix.button.Button, kivy.uix.actionbar.ActionItem):
     def __init__(self, text, callback, **kargs):
         super().__init__(**kargs)
         self.text = text
+        self.bind(on_press=callback)
 
 class TopMenuView(kivy.uix.actionbar.ActionView):
 
     def __init__(self, **kargs):
         super().__init__(**kargs)
-        self.action_previous = MenuButton('Back', lambda x: x)
+        self.action_previous = MenuButton('Back', self.multiply)
         self.padding = [10, 10]
         self.spacing = 10
-        self.add_widget(MenuButton('Button', lambda x: x))
+        self.add_widget(MenuButton('Button', self.boom))
+
+    def multiply(self, instance):
+        self.add_widget(MenuButton('Button', self.boom))
+
+    def boom(self, instance):
+        self.clear_widgets()
 
 class TopMenu(kivy.uix.actionbar.ActionBar):
 
