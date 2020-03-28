@@ -4,6 +4,7 @@ import kivy
 import kivy.app
 import kivy.graphics
 import kivy.uix.actionbar
+import kivy.uix.button
 import kivy.uix.image
 import kivy.uix.gridlayout
 import kivy.uix.label
@@ -16,12 +17,28 @@ def update_widget_bg(widget, value):
     widget.rect.pos = widget.pos
     widget.rect.size = widget.size
 
+class MenuButton(kivy.uix.button.Button, kivy.uix.actionbar.ActionItem):
+
+    def __init__(self, text, callback, **kargs):
+        super().__init__(**kargs)
+        self.text = text
+
+class TopMenuView(kivy.uix.actionbar.ActionView):
+
+    def __init__(self, **kargs):
+        super().__init__(**kargs)
+        self.action_previous = MenuButton('Back', lambda x: x)
+        self.padding = [10, 10]
+        self.spacing = 10
+        self.add_widget(MenuButton('Button', lambda x: x))
+
 class TopMenu(kivy.uix.actionbar.ActionBar):
 
     def __init__(self, **kargs):
         super().__init__(**kargs)
         self.size_hint = (100, 8)
         self.background_color = (255, 255, 255, 0.7)
+        self.add_widget(TopMenuView())
 
 class SelectionView(kivy.uix.stacklayout.StackLayout):
 
